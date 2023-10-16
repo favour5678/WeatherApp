@@ -1,8 +1,10 @@
+import { Home } from "./pages/Home"
+
 function App() {
   return (
-    <>
-      Weather App
-    </>
+    <main>
+      <Home />
+    </main>
   )
 }
 
