@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Home } from "../pages/Home";
-import { WeatherPage } from "../pages/WeatherPage";
+import { ForecastPage } from "../pages/ForecastPage";
 
 export const router = createBrowserRouter([
   {
@@ -8,7 +8,7 @@ export const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "/weatherpage",
-    element: <WeatherPage />
+    path: "/forecastpage",
+    element: <ForecastPage />
   }
 ]);
