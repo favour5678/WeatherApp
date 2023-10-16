@@ -9,6 +9,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "/weatherpage",
-    element: <WeatherPage />,
-  },
+    element: <WeatherPage />
+  }
 ]);
