@@ -1,12 +1,21 @@
 import React from 'react'
+import weather_img from '../assets/weather.png'
 
 export const Home = () => {
     // #222850
     // #8C43A8
+
   return (
-    <section className='bg-gradient-to-l from-[#222850] to-[#8C43A8] w-full h-screen'>
+    <section className=''>
+        <div className='flex flex-col items-center'>
         <div>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam expedita aspernatur maxime eveniet ipsa quaerat soluta neque quam amet nemo, est repellendus assumenda voluptatum corrupti suscipit ipsum asperiores sapiente perspiciatis?
+          <img src={weather_img} alt="weather-img" className=''/>
+        </div>
+        <div className='text-center'>
+            <p className='text-5xl text-white'>Weather</p>
+            <p className='text-xl text-yellow-500'>Forecasts</p>
+        </div>
+        <button>Get Started</button>
         </div>
     </section>
   )
