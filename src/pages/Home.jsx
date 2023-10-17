@@ -14,7 +14,7 @@ export const Home = () => {
           <p className="text-5xl tracking-wide text-[#DDB130]">Forecasts</p>
         </div>
         <Link
-          to={"/forecastpage"}
+          to={"/weatherpage"}
           className="text-center bg-[#DDB130] text-[#362A84] p-2 w-52 h-[39px] tracking-wide rounded-full font-semibold mt-16 shadow-md"
         >
           Get Started
