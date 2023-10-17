@@ -10,5 +10,5 @@ export const router = createBrowserRouter([
   {
     path: "/forecastpage",
     element: <ForecastPage />
-  }
+  },
 ]);

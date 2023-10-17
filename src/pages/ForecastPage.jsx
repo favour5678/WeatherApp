@@ -1,12 +1,56 @@
-import React from 'react'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-const API_KEY = '3eZ0N3WeW347eIV3PzWc9hhN8dy4y00k'
-const BASE_URL = 'http://dataservice.accuweather.com/locations/v1/cities/search'
-
+const API_KEY = "Skr4DO6ZB3DtuQG2k1N75KEROQ1oR31l";
+const CITY_KEY = "255403";
 export const ForecastPage = () => {
+  const [cityWeatherData, setCityWeatherData] = useState(null);
+  const [city, setCity] = useState("");
+  const [cityKey, setCityKey] = useState(null);
+  const apiUrl = `https://dataservice.accuweather.com/currentconditions/v1/${CITY_KEY}?apikey=${API_KEY}`;
+  const locationUrl = `https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_KEY}&q=${city}`;
+
+  useEffect(() => {
+    if (cityKey) {
+      axios
+        .get(apiUrl)
+        .then((response) => {
+          console.log(response.data);
+          setCityWeatherData(response.data[0]);
+        })
+        .catch((error) => {
+          console.error(error, "Error fetching weather data");
+        });
+    }
+  }, [cityKey]);
+
+  const handleSearch = (e) => {
+    axios
+      .get(locationUrl)
+      .then((response) => {
+        if (response.data.length > 0) {
+          console.log(response.data[0]);
+          // setCityKey(response.data[0].Key)
+        } else {
+          console.error("City not found");
+        }
+      })
+      .catch((error) => {
+        console.error(error, "Error searching city");
+      });
+  };
+
   return (
-    <section>
-        <div></div>
-    </section>
-  )
-}
+    <div>
+      <input
+        type="text"
+        placeholder="search city"
+        value={city}
+        onChange={(e) => setCity(e.target.value)}
+      />
+      <button onClick={handleSearch} className="border">
+        Search
+      </button>
+    </div>
+  );
+};
