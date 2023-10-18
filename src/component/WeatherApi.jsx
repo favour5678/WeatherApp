@@ -4,11 +4,20 @@ import React, { useEffect, useState } from "react";
 export const WeatherApi = () => {
   const [cityWeatherData, setCityWeatherData] = useState(null);
   const [city, setCity] = useState("");
+  const [cityName, setCityName] = useState("");
   const [cityKey, setCityKey] = useState(null);
+  const [isDay, setIsDay] = useState(true);
+  const [weatherIconCode, setWeatherIconCode] = useState(null);
 
-  const API_KEY = "KMRumIvdiTQ5YZMlHiBT2IW8qzcbfW1p";
+  const dayTime =
+    "https://img.freepik.com/free-vector/sky-background-video-conferencing_23-2148625271.jpg";
+  const nightTime =
+    "https://cdn.pixabay.com/photo/2020/02/08/00/35/animated-4828785_1280.jpg";
+
+  const API_KEY = "A4ape1Xsx3BF8r85Y8rtuz6IwMnOI2Dt";
   const apiUrl = `https://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${API_KEY}`;
   const locationUrl = `https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_KEY}&q=${city}`;
+  const cityUrl = `https://dataservice.accuweather.com/locations/v1/${cityKey}?apikey=${API_KEY}`;
 
   useEffect(() => {
     if (cityKey) {
@@ -17,9 +26,27 @@ export const WeatherApi = () => {
         .then((response) => {
           console.log(response.data[0]);
           setCityWeatherData(response.data[0]);
+          setCity("");
+
+          if (response.data[0].IsDayTime) {
+            setIsDay(true);
+          } else {
+            setIsDay(false);
+          }
+          setWeatherIconCode(response.data[0].WeatherIcon);
         })
         .catch((error) => {
           console.error(error, "Error fetching weather data");
+        });
+
+      axios
+        .get(cityUrl)
+        .then((response) => {
+          console.log(response.data.LocalizedName);
+          setCityName(response.data.LocalizedName);
+        })
+        .catch((error) => {
+          console.error(error, "Error fetching city name");
         });
     }
   }, [cityKey]);
@@ -60,12 +87,21 @@ export const WeatherApi = () => {
       {cityWeatherData && (
         <div className="w-[60%]">
           <div>
-            <p className="w-[100%] h-[20vh] border">Weather Image
-                <img src='' alt="" />
+            <p className="w-[100%] h-[20vh] border">
+              Weather
+              <img src="" alt="" />
             </p>
-            <p>City Name: </p>
+            {isDay ? (
+              <img src={dayTime} alt="daytime-img" />
+            ) : (
+              <img src={nightTime} alt="nighttime-img" />
+            )}
+            <p>City Name: {cityName}</p>
             <p>Weather Condidtion: {cityWeatherData.WeatherText}</p>
-            <p>Temperature: {cityWeatherData.Temperature.Metric.Value} &deg;C</p>
+            <p>
+              Temperature: {cityWeatherData.Temperature.Metric.Value} &deg;C
+            </p>
+            <p>CurrentTime: {cityWeatherData.IsDayTime}</p>
           </div>
         </div>
       )}
