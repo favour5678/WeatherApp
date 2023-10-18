@@ -8,6 +8,7 @@ export const WeatherApi = () => {
   const [cityKey, setCityKey] = useState(null);
   const [isDay, setIsDay] = useState(true);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true)
 
   const dayTime =
     "https://img.freepik.com/free-vector/sky-background-video-conferencing_23-2148625271.jpg";
@@ -42,10 +43,13 @@ export const WeatherApi = () => {
       .catch(([weatherError, cityError]) => {
         console.log(weatherError, "Error fetching weather data");
         console.log(cityError, "Error fetching city name");
-      });
+      }).finally(() => {
+        setLoading(false)
+      })
   }, [cityKey]);
 
   const handleSearch = (e) => {
+    setLoading(true)
     axios
       .get(locationUrl)
       .then((response) => {
@@ -57,13 +61,15 @@ export const WeatherApi = () => {
       })
       .catch((error) => {
         console.error(error, "Error searching city");
-      });
+      }).finally(() => {
+        setLoading(false)
+      })
   };
 
   return (
-    <section className="container mx-auto flex justify-center pt-5">
-      <div className="bg-gradient-to-b from-[#463495] to-[#7E6BBA] h-[90vh] w-[50%] shadow-xl">
-        <p className="text-center text-white mt-2">
+    <section className="container mx-auto flex justify-center items-center h-screen">
+      <div className="bg-gradient-to-b from-[#463495] to-[#7E6BBA] h-[88vh]  w-[50%] shadow-xl text-center">
+        <p className="text-sm md:text-base text-center text-white mt-2">
           Enter a location for weather Information
         </p>
         <span className="flex mx-auto space-x-3 mt-5 w-[80%]">
@@ -75,7 +81,7 @@ export const WeatherApi = () => {
             onChange={(e) => setCitySearch(e.target.value)}
           />
           <button
-            className="flex justify-center items-center bg-[#DDB130] text-[#362A84] p-2 w-28 h-[30px] rounded-md font-semibold shadow-md"
+            className="text-sm md:text-base flex justify-center items-center bg-[#DDB130] text-[#362A84] p-2 w-28 h-[30px] rounded-md font-semibold shadow-md outline-none"
             onClick={handleSearch}
           >
             Search
@@ -83,25 +89,34 @@ export const WeatherApi = () => {
         </span>
         <p className="border-t mt-10"></p>
         {cityWeatherData && (
-          <div className="">
-            <div>
-              <p>
-                {isDay ? (
-                  <img src={dayTime} alt="daytime-img" className="w-full h-72 object-center object-cover"/>
-                ) : (
-                  <img src={nightTime} alt="nighttime-img" className="w-full h-72 object-top object-cover"/>
-                )}
-              </p>
-              <p>City Name: {cityName}</p>
-              <p>Weather Condidtion: {cityWeatherData.WeatherText}</p>
-              <p>
-                Temperature: {cityWeatherData.Temperature.Metric.Value} &deg;C
-              </p>
-              <p>CurrentTime: {cityWeatherData.IsDayTime}</p>
-            </div>
+          <div>
+            <p>
+              {isDay ? (
+                <img
+                  src={dayTime}
+                  alt="daytime-img"
+                  className="w-full h-60 md:h-72 object-center object-cover"
+                />
+              ) : (
+                <img
+                  src={nightTime}
+                  alt="nighttime-img"
+                  className="w-full h-60 md:h-72 object-top object-cover"
+                />
+              )}
+            </p>
+            <p className="text-white uppercase font-semibold tracking-widest text-sm md:text-xl mt-3">
+              {cityName}
+            </p>
+            <p className="text-white uppercase tracking-widest mt-2 text-base">
+              {cityWeatherData.WeatherText}
+            </p>
+            <p className="text-white tracking-widest text-3xl md:text-5xl mt-7">
+              {cityWeatherData.Temperature.Metric.Value} &deg;C
+            </p>
           </div>
         )}
-      </div>{" "}
+      </div>
     </section>
   );
 };
