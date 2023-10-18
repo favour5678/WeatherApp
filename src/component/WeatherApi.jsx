@@ -70,7 +70,7 @@ export const WeatherApi = () => {
 
   return (
     <section className="container mx-auto flex justify-center items-center h-screen">
-      <div className="bg-gradient-to-b from-[#463495] to-[#7E6BBA] h-[88vh] w-[50%] shadow-xl text-center">
+      <div className="bg-gradient-to-b from-[#463495] to-[#7E6BBA] h-[88vh] w-[80%] md:w-[50%] shadow-xl text-center">
         <p className="text-sm md:text-base text-center text-white mt-2">
           Enter a location for weather Information
         </p>
@@ -78,7 +78,7 @@ export const WeatherApi = () => {
           <input
             type="text"
             placeholder="Search city"
-            className="w-full border border-[#DDB130] outline-none rounded-md pl-3"
+            className="w-full border border-[#DDB130] outline-none rounded-md pl-1 md:pl-3"
             value={citySearch}
             onChange={(e) => setCitySearch(e.target.value)}
           />
