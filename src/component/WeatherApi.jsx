@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export const WeatherApi = () => {
   const [cityWeatherData, setCityWeatherData] = useState(null);
@@ -8,7 +9,7 @@ export const WeatherApi = () => {
   const [cityKey, setCityKey] = useState(null);
   const [isDay, setIsDay] = useState(true);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false);
 
   const dayTime =
     "https://img.freepik.com/free-vector/sky-background-video-conferencing_23-2148625271.jpg";
@@ -43,13 +44,11 @@ export const WeatherApi = () => {
       .catch(([weatherError, cityError]) => {
         console.log(weatherError, "Error fetching weather data");
         console.log(cityError, "Error fetching city name");
-      }).finally(() => {
-        setLoading(false)
-      })
+      });
   }, [cityKey]);
 
   const handleSearch = (e) => {
-    setLoading(true)
+    setLoading(true);
     axios
       .get(locationUrl)
       .then((response) => {
@@ -61,14 +60,15 @@ export const WeatherApi = () => {
       })
       .catch((error) => {
         console.error(error, "Error searching city");
-      }).finally(() => {
-        setLoading(false)
       })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
     <section className="container mx-auto flex justify-center items-center h-screen">
-      <div className="bg-gradient-to-b from-[#463495] to-[#7E6BBA] h-[88vh]  w-[50%] shadow-xl text-center">
+      <div className="bg-gradient-to-b from-[#463495] to-[#7E6BBA] h-[88vh] w-[50%] shadow-xl text-center">
         <p className="text-sm md:text-base text-center text-white mt-2">
           Enter a location for weather Information
         </p>
@@ -88,32 +88,38 @@ export const WeatherApi = () => {
           </button>
         </span>
         <p className="border-t mt-10"></p>
-        {cityWeatherData && (
+        {loading ? (
+          <AiOutlineLoading3Quarters className="animate-spin flex justify-center mx-auto mt-44 text-white text-3xl" />
+        ) : (
           <div>
-            <p>
-              {isDay ? (
-                <img
-                  src={dayTime}
-                  alt="daytime-img"
-                  className="w-full h-60 md:h-72 object-center object-cover"
-                />
-              ) : (
-                <img
-                  src={nightTime}
-                  alt="nighttime-img"
-                  className="w-full h-60 md:h-72 object-top object-cover"
-                />
-              )}
-            </p>
-            <p className="text-white uppercase font-semibold tracking-widest text-sm md:text-xl mt-3">
-              {cityName}
-            </p>
-            <p className="text-white uppercase tracking-widest mt-2 text-base">
-              {cityWeatherData.WeatherText}
-            </p>
-            <p className="text-white tracking-widest text-3xl md:text-5xl mt-7">
-              {cityWeatherData.Temperature.Metric.Value} &deg;C
-            </p>
+            {cityWeatherData && (
+              <div>
+                <p>
+                  {isDay ? (
+                    <img
+                      src={dayTime}
+                      alt="daytime-img"
+                      className="w-full h-60 md:h-72 object-center object-cover"
+                    />
+                  ) : (
+                    <img
+                      src={nightTime}
+                      alt="nighttime-img"
+                      className="w-full h-60 md:h-72 object-top object-cover"
+                    />
+                  )}
+                </p>
+                <p className="text-white uppercase font-semibold tracking-widest text-sm md:text-xl mt-3">
+                  {cityName}
+                </p>
+                <p className="text-white uppercase tracking-widest mt-2 text-base">
+                  {cityWeatherData.WeatherText}
+                </p>
+                <p className="text-white tracking-widest text-3xl md:text-5xl mt-7">
+                  {cityWeatherData.Temperature.Metric.Value} &deg;C
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>
