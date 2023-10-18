@@ -8,7 +8,7 @@ export const WeatherApi = () => {
   const [cityName, setCityName] = useState("");
   const [cityKey, setCityKey] = useState(null);
   const [isDay, setIsDay] = useState(true);
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const dayTime =
@@ -49,13 +49,15 @@ export const WeatherApi = () => {
 
   const handleSearch = (e) => {
     setLoading(true);
+    setErrorMessage("");
+
     axios
       .get(locationUrl)
       .then((response) => {
         if (response.data && response.data.length > 0) {
           setCityKey(response.data[0].Key);
         } else {
-          console.error("City not found");
+          setErrorMessage("City not found!");
         }
       })
       .catch((error) => {
@@ -90,6 +92,10 @@ export const WeatherApi = () => {
         <p className="border-t mt-10"></p>
         {loading ? (
           <AiOutlineLoading3Quarters className="animate-spin flex justify-center mx-auto mt-44 text-white text-3xl" />
+        ) : errorMessage ? (
+          <p className="text-white tracking-wider text-xl mt-44">
+            {errorMessage}
+          </p>
         ) : (
           <div>
             {cityWeatherData && (
