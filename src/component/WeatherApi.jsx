@@ -69,7 +69,7 @@ export const WeatherApi = () => {
   };
 
   return (
-    <section className="container mx-auto flex justify-center items-center h-screen">
+    <section className="container mx-auto flex justify-center items-center pt-8 md:pt-0 md:h-screen">
       <div className="bg-gradient-to-b from-[#463495] to-[#7E6BBA] h-[88vh] w-[80%] md:w-[50%] shadow-xl text-center">
         <p className="text-sm md:text-base text-center text-white mt-2">
           Enter a location for weather Information
